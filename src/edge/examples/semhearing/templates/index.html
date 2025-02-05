@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Semantic Hearing Demo</title>
+</head>
+
+<body>
+
+    <h1 id="title">Semantic Hearing Demo</h1>
+    <div id="app-container">
+        <table>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/cat.webp">
+                </td>
+                <td>
+                    <button id="cat-btn" class="class-btn">Cat</button>
+                </td>
+            </tr>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/cricket.png">
+                </td>
+                <td>
+                    <button id="cricket-btn" class="class-btn">Cricket</button>
+                </td>
+            </tr>
+            <tr class="selection-row" id="dog-row">
+                <td>
+                    <img class="class-icon" src="img/dog.webp">
+                </td>
+                <td>
+                    <button id="dog-btn" class="class-btn">Dog</button>
+                </td>
+            </tr>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/knock.png">
+                </td>
+                <td>
+                    <button id="knock-btn" class="class-btn">Knock</button>
+                </td>
+            </tr>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/rooster.webp">
+                </td>
+                <td>
+                    <button id="rooster-btn" class="class-btn">Rooster</button>
+                </td>
+            </tr>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/pause.webp">
+                </td>
+                <td>
+                    <button id="pause-btn" class="class-btn">Pause</button>
+                </td>
+            </tr>
+            <tr class="selection-row">
+                <td>
+                    <img class="class-icon" src="img/stop.png">
+                </td>
+                <td>
+                    <button id="stop-btn" class="class-btn">Stop</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <script>
+        function createButtonClickHandler(button) {
+            return async function() {
+                try {
+                    const response = await fetch('/', {
+                        method: 'post',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            'class_id': button.id
+                        })
+                    });
+                    console.log('Completed!', button.id);
+                    console.log('Completed!', response);
+                } catch (err) {
+                    console.error(`Error: ${err}`);
+                }
+            }
+        }
+        
+        var buttons = document.getElementsByClassName('class-btn')
+        
+        for ( var counter = 0; counter < buttons.length; counter++){
+            button = buttons[counter]
+            button.addEventListener('click', createButtonClickHandler(button));
+        }
+    </script>
+</body>

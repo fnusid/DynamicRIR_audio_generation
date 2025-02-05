@@ -1,0 +1,7 @@
+noisereduce
+torch
+librosa
+soundfile
+scipy
+numpy
+asteroid

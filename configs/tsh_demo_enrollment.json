@@ -1,0 +1,84 @@
+{
+    "pl_module": "src.hl_modules.enrollment_hl_module.PLModule",
+    "pl_module_args": {
+        "metrics":["snr_i", "si_sdr_i"],
+        "model": "src.models.TFGridNetEnrollment.net.Net",
+        "model_params": {
+            "spk_emb_dim": 256,
+            "stft_back_pad": 64,
+            "stft_chunk_size": 128,
+            "stft_pad_size": 64,
+            "num_ch": 2,
+            "D": 64,
+            "L": 4,
+            "I": 1,
+            "J": 1,
+            "B": 6,
+            "H": 64,
+            "E": 2,
+            "num_src": 2,
+            "use_attn": false,
+            "use_first_ln": true,
+            "conv_lstm": false
+        },
+        "samples_per_speaker_number":5,
+        "optimizer":"torch.optim.Adam",
+        "optimizer_params":{
+            "lr":5e-4
+        },
+        "scheduler":"torch.optim.lr_scheduler.ReduceLROnPlateau",
+        "scheduler_params":{
+            "mode":"min",
+            "patience":8,
+            "factor":0.5,
+            "min_lr":1e-6
+        },
+        "sr":16000,
+        "grad_clip":0.5
+    },
+    "train_dataset": "src.datasets.TSHEnrollmentDataset.MixLibriSpeechNoisyEnroll",
+    "train_data_args": {
+        "fg_dir": "/scr/MixLibriSpeech/librispeech_scaper_fmt/train-clean-360",
+        "bg_dir": "/scr/MixLibriSpeech/wham_noise",
+        "jams_dir": "/scr/MixLibriSpeech/jams/train-clean-360",
+        "embed_dir": "/scr/MixLibriSpeech/librispeech_dvector_embeddings/train-clean-360",
+        "hrtf_list": [
+            "/scr/MixLibriSpeech/CIPIC/train_hrtf.txt",
+            "/scr/RRBRIR/train_hrtf.txt",
+            "/scr/ASH-Listening-Set-8.0/BRIRs",
+            "/scr/CATT_RIRs/Binaural/16k"
+        ],
+        "hrtf_type": "MultiCh",
+        "num_enroll": 1,
+        "sr": 16000,
+        "max_samples":20000,
+        "resample_rate": null,
+        "skip_enrollment_simulation":false,
+        "use_motion":false,
+        "augmentations":[]
+    },
+    "val_dataset": "src.datasets.TSHEnrollmentDataset.MixLibriSpeechNoisyEnroll",
+    "val_data_args": {
+        "fg_dir": "/scr/MixLibriSpeech/librispeech_scaper_fmt/dev-clean",
+        "bg_dir": "/scr/MixLibriSpeech/wham_noise",
+        "jams_dir": "/scr/MixLibriSpeech/jams/dev-clean",
+        "embed_dir": "/scr/MixLibriSpeech/librispeech_dvector_embeddings/dev-clean",
+        "hrtf_list": [
+            "/scr/MixLibriSpeech/CIPIC/train_hrtf.txt",
+            "/scr/RRBRIR/train_hrtf.txt",
+            "/scr/ASH-Listening-Set-8.0/BRIRs",
+            "/scr/CATT_RIRs/Binaural/16k"
+        ],
+        "hrtf_type": "MultiCh",
+        "num_enroll": 1,
+        "sr": 16000,
+        "max_samples":2000,
+        "resample_rate": null,
+        "skip_enrollment_simulation":false,
+        "use_motion":false
+    },
+    "epochs": 200,
+    "batch_size": 8,
+    "eval_batch_size": 8,
+    "num_workers": 16
+}

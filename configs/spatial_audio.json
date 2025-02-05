@@ -1,0 +1,52 @@
+{
+    "pl_module": "hl_modules.spatial_audio_hl_module.PLModule",
+    "pl_module_args": {
+        "metrics":["mse"],
+        "model": "models.mamba.aTENNuate.Denoiser",
+        "model_params": {
+            "in_channels":4, 
+            "channels":[16, 32, 64, 96, 128, 256], 
+            "num_coeffs":16, 
+            "repeat":16, 
+            "resample_factors":[4, 4, 2, 2, 2, 2], 
+            "pre_conv": "True"
+        },
+        "samples_per_speaker_number":5,
+        "optimizer":"torch.optim.Adam",
+        "optimizer_params":{
+            "lr":1e-3
+        },
+        "loss":"losses.MultiResoLoss.MultiResoFuseLoss",                                                                                  
+        "loss_params":{                                                                                                                       
+            "l1_ratio":1
+        },
+        "scheduler":"torch.optim.lr_scheduler.ReduceLROnPlateau",
+        "scheduler_params":{
+            "mode":"min",
+            "patience":8,
+            "factor":0.5,
+            "min_lr":1e-6
+        },
+        "sr":16000,
+        "grad_clip":0.5
+    },
+    "train_dataset": "datasets.LibriTTS_spatial_audio.LibriTTS_spatial_audio",
+    "train_data_args": {
+        "dataset_dir": "/mmfs1/gscratch/intelligentsystems/common_datasets/spatial_audio/train",
+        "sr": 16000
+    },
+    "val_dataset": "datasets.LibriTTS_spatial_audio.LibriTTS_spatial_audio",
+    "val_data_args": {
+        "dataset_dir": "/mmfs1/gscratch/intelligentsystems/common_datasets/spatial_audio/dev",
+        "sr": 16000
+    },
+    "test_dataset": "datasets.LibriTTS_spatial_audio.LibriTTS_spatial_audio",
+    "test_data_args": {
+        "dataset_dir": "/mmfs1/gscratch/intelligentsystems/common_datasets/spatial_audio/test",
+        "sr": 16000
+    },
+    "epochs": 100,
+    "batch_size": 256,
+    "eval_batch_size": 4,
+    "num_workers": 16
+}

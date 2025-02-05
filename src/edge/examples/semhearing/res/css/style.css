@@ -1,0 +1,88 @@
+/* Apply styles to the body for better layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 8px;
+    text-align: center;
+}
+
+h1 {
+    display: inline-block;
+}
+
+/* Style the table for button layout */
+table {
+    border-collapse: collapse;
+    margin: 0 auto; /* Set margin to auto to center horizontally */
+    /* width: 60%; */
+}
+
+/* Additional styling for table cells if needed */
+td, th {
+    /* border: 1px solid #ddd; */
+    padding: 8px;
+    /* width: auto; */
+}
+
+/* Style each button */
+.class-btn {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 32px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style each icon */
+.class-icon {
+    width: 48px;
+    height: 48px;
+}
+
+#app-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Define different background colors for each button */
+#cat-btn {
+    background-color: #3498db;
+    color: #fff;
+}
+
+#cricket-btn {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+#dog-btn {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+#knock-btn {
+    background-color: #f39c12;
+    color: #fff;
+}
+
+#rooster-btn {
+    background-color: #9b59b6;
+    color: #fff;
+}
+
+#pause-btn {
+    background-color: #ffffff;
+    color: #000;
+}
+
+#stop-btn {
+    background-color: #000000;
+    color: #fff;
+}

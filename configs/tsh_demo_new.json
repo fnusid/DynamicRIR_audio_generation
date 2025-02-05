@@ -1,0 +1,91 @@
+{
+    "pl_module": "src.hl_modules.tse_hl_module.PLModule",
+    "pl_module_args": {
+        "use_dp":false,
+        "metrics":["snr_i", "si_sdr_i"],
+        "tsh_model": "src.models.TFGridNetEmbed.net.Net",
+        "tsh_model_params": {
+            "spk_emb_dim": 256,
+            "stft_back_pad": 64,
+            "stft_chunk_size": 64,
+            "stft_pad_size": 64,
+            "num_ch": 2,
+            "D": 64,
+            "L": 4,
+            "I": 1,
+            "J": 1,
+            "B": 6,
+            "H": 64,
+            "E": 2,
+            "num_src": 2,
+            "use_attn": false,
+            "use_first_ln": true,
+            "conv_lstm": false
+        },
+        "enrollment_model": "src.models.ConvTasNetEnrollment.net.Net",
+        "enrollment_model_params": {
+            "num_mics": 2,
+            "encoder_ks": 33,
+            "encoder_dim": 128,
+            "encoder_stride": 16,
+            "embed_dim": 128
+        },
+        "samples_per_speaker_number":5,
+        "optimizer":"torch.optim.Adam",
+        "optimizer_params":{
+            "lr":1e-3
+        },
+        "loss":"src.losses.SNRLosses.SNRLosses",                                                                                  
+        "loss_params":{                                                                                                                       
+            "name":"snr"
+        },
+        "scheduler":"torch.optim.lr_scheduler.ReduceLROnPlateau",
+        "scheduler_params":{
+            "mode":"min",
+            "patience":8,
+            "factor":0.5,
+            "min_lr":1e-6
+        },
+        "sr":16000,
+        "grad_clip":0.5
+    },
+    "train_dataset": "src.datasets.TSHDataset.MixLibriSpeechNoisyEnroll",
+    "train_data_args": {
+        "speech_dir": "/scr/MixLibriSpeech/librispeech_scaper_fmt/train-clean-360",
+        "noise_dir": "/scr/MixLibriSpeech/wham_noise/tr",
+        "embed_dir": "/scr/MixLibriSpeech/librispeech_dvector_embeddings/train-clean-360",
+        "hrtf_list": [
+            "/scr/MixLibriSpeech/CIPIC/train_hrtf.txt",
+            "/scr/RRBRIR/train_hrtf.txt",
+            "/scr/ASH-Listening-Set-8.0/BRIRs",
+            "/scr/CATT_RIRs/Binaural/16k"
+        ],
+        "hrtf_type": "MultiCh",
+        "num_enroll": 1,
+        "sr": 16000,
+        "samples_per_epoch":20000,
+        "use_motion":false,
+        "augmentations":[]
+    },
+    "val_dataset": "src.datasets.TSHDataset.MixLibriSpeechNoisyEnroll",
+    "val_data_args": {
+        "speech_dir": "/scr/MixLibriSpeech/librispeech_scaper_fmt/dev-clean",
+        "noise_dir": "/scr/MixLibriSpeech/wham_noise/cv",
+        "embed_dir": "/scr/MixLibriSpeech/librispeech_dvector_embeddings/dev-clean",
+        "hrtf_list": [
+            "/scr/MixLibriSpeech/CIPIC/val_hrtf.txt",
+            "/scr/RRBRIR/val_hrtf.txt",
+            "/scr/ASH-Listening-Set-8.0/BRIRs",
+            "/scr/CATT_RIRs/Binaural/16k"
+        ],
+        "hrtf_type": "MultiCh",
+        "num_enroll": 1,
+        "sr": 16000,
+        "samples_per_epoch":2000,
+        "use_motion":false
+    },
+    "epochs": 200,
+    "batch_size": 6,
+    "eval_batch_size": 8,
+    "num_workers": 16
+}
