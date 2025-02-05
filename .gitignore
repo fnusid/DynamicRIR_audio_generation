@@ -1,1 +1,4 @@
 /src/wandb
+/src/profiler_trace_loading_audios.json
+/src/profiler_trace.json
+src/profiler_trace_loading_rir.json
